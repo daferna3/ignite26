@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calm Productivity</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<audio id="bgSound" loop>
+  <source src="audio/bell.mp3" type="audio/mpeg">
+</audio>
+
+<div class="top-bar">
+  <button class="top-btn" onclick="toggleFocus()">🌿 Focus Mode</button>
+  <button class="top-btn" onclick="toggleSound()" id="soundBtn">🔇 Calm Sound</button>
+</div>
+
+<div class="container">
+
+  <!-- LEFT: TIMER -->
+  <div class="timer-section card">
+    <h2 class="section-title">Gentle Timer</h2>
+
+    <!-- Preset buttons -->
+    <div class="presets">
+      <button class="preset-btn" onclick="setTimer(5)">5m</button>
+      <button class="preset-btn" onclick="setTimer(10)">10m</button>
+      <button class="preset-btn active" onclick="setTimer(25)">25m</button>
+      <button class="preset-btn" onclick="setTimer(45)">45m</button>
+      <button class="preset-btn" onclick="setTimer(60)">60m</button>
+    </div>
+
+    <!-- Custom time input -->
+    <div class="custom-time">
+      <input type="number" id="customMinutes" placeholder="Custom min" min="1" max="180">
+      <button class="set-btn" onclick="setCustomTimer()">Set</button>
+    </div>
+
+    <!-- Timer display -->
+    <div id="time" class="time-display">25:00</div>
+
+    <!-- Adjust time buttons -->
+    <div class="adjusters">
+      <button class="adj-btn" onclick="adjustTime(-5)">-5m</button>
+      <button class="adj-btn" onclick="adjustTime(-1)">-1m</button>
+      <button class="adj-btn" onclick="adjustTime(1)">+1m</button>
+      <button class="adj-btn" onclick="adjustTime(5)">+5m</button>
+    </div>
+
+    <!-- Controls -->
+    <div class="timer-controls">
+      <button class="ctrl-btn start-btn" onclick="startTimer()">▶ Start</button>
+      <button class="ctrl-btn pause-btn" onclick="pauseTimer()">⏸ Pause</button>
+      <button class="ctrl-btn reset-btn" onclick="resetTimer()">↺ Reset</button>
+    </div>
+
+    <!-- Sound toggle -->
+    <label class="sound-label">
+      <input type="checkbox" id="soundToggle"> Ring when done
+    </label>
+  </div>
+
+  <!-- RIGHT: TASK LIST -->
+  <div class="task-section card">
+    <h2 class="section-title">Tasks</h2>
+
+    <div class="task-inputs">
+      <input type="text" id="taskInput" placeholder="What do you need to do?">
+      <div class="date-row">
+        <input type="datetime-local" id="dueDate">
+        <span class="date-hint">Due date is optional</span>
+      </div>
+      <button class="add-btn" onclick="addTask()">+ Add Task</button>
+    </div>
+
+    <ul id="taskList"></ul>
+  </div>
+
+</div>
+
+<script src="timerTasklist.js"></script>
+</body>
+</html>

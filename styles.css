@@ -1,0 +1,94 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f4f7f6;
+  color: #333;
+}
+
+/* HEADER */
+.header {
+  text-align: center;
+  padding: 40px 20px 10px;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 36px;
+}
+
+.header p {
+  margin-top: 10px;
+  color: #666;
+}
+
+/* MAIN SECTION */
+.main {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  padding: 40px;
+  flex-wrap: wrap;
+}
+
+/* CARDS */
+.card {
+  width: 250px;
+  padding: 20px;
+  border-radius: 16px;
+  background-color: #ffffff;
+  text-align: center;
+  text-decoration: none;
+  color: inherit;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+}
+
+/* DISABLED CARDS */
+.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* FOOTER */
+.footer {
+  text-align: center;
+  padding: 20px;
+  font-size: 14px;
+  color: #888;
+}
+
+/* 🎨 PALETTE SWITCHER */
+.palette-switcher {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #ffffff;
+  padding: 10px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.palette-switcher p {
+  margin: 0 0 5px;
+  font-size: 12px;
+}
+
+.palette-btn {
+  border: none;
+  margin: 3px;
+  padding: 8px;
+  border-radius: 50%;
+  cursor: pointer;
+  background-color: #e0e0e0;
+  transition: transform 0.2s ease;
+}
+
+.palette-btn:hover {
+  transform: scale(1.1);
+}

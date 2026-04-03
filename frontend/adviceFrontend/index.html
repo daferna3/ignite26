@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Breathe — Your Calm Companion</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <main class="container">
+      <!-- Header -->
+      <header class="header">
+        <div class="logo">🌿 breathe</div>
+        <p class="tagline">a quiet space when things feel loud</p>
+      </header>
+
+      <!-- Name input (optional personalization) -->
+      <section class="name-section">
+        <label for="user-name">What should I call you? <span class="optional">(optional)</span></label>
+        <input
+          type="text"
+          id="user-name"
+          placeholder="Your name…"
+          maxlength="30"
+          autocomplete="off"
+        />
+      </section>
+
+      <!-- ── MOOD SELECTOR ── -->
+      <section class="card mood-card">
+        <h2 class="card-title">How are you feeling right now?</h2>
+        <div class="mood-grid">
+          <button class="mood-btn" data-mood="anxious">😰 Anxious</button>
+          <button class="mood-btn" data-mood="overwhelmed">🤯 Overwhelmed</button>
+          <button class="mood-btn" data-mood="sad">😞 Low / Sad</button>
+          <button class="mood-btn" data-mood="stressed">😤 Stressed</button>
+          <button class="mood-btn breakdown-btn" data-mood="breakdown">⚠️ About to break down</button>
+        </div>
+
+        <!-- Tip output -->
+        <div class="tip-box hidden" id="tip-box">
+          <div class="tip-header">
+            <span class="tip-label">A tip for you</span>
+            <button class="another-btn" id="another-btn">Try another ↺</button>
+          </div>
+          <p class="tip-text" id="tip-text"></p>
+          <div class="tip-loading hidden" id="tip-loading">
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── CHAT ── -->
+      <section class="card chat-card">
+        <h2 class="card-title">Talk to me 💬</h2>
+        <p class="card-sub">Type how you're feeling. I'm here.</p>
+        <div class="chat-window" id="chat-window">
+          <div class="chat-bubble bot-bubble">Hey 🌿 I'm here. What's going on?</div>
+        </div>
+        <div class="chat-input-row">
+          <input
+            type="text"
+            id="chat-input"
+            placeholder="Tell me how you're feeling…"
+            autocomplete="off"
+          />
+          <button id="chat-send">→</button>
+        </div>
+      </section>
+
+      <!-- ── BRAIN DUMP ── -->
+      <section class="card dump-card">
+        <h2 class="card-title">Brain Dump 📝</h2>
+        <p class="card-sub">Get it out of your head. No one reads this but you.</p>
+        <textarea
+          id="brain-dump"
+          placeholder="Type everything that's in your head right now… thoughts, worries, anything. Just let it out."
+          rows="5"
+        ></textarea>
+        <div class="dump-actions">
+          <button class="dump-btn clear-btn" id="clear-dump">Clear</button>
+          <span class="dump-note">Nothing is saved. This space is yours.</span>
+        </div>
+      </section>
+
+      <!-- Disclaimer -->
+      <footer class="disclaimer">
+        <p>
+          🌿 This tool offers support, not medical advice. If you're in crisis,
+          please reach out to someone you trust or a mental health professional.
+        </p>
+        <a class="help-link" href="https://988lifeline.org/" target="_blank" rel="noopener">
+          Get professional help →
+        </a>
+      </footer>
+    </main>
+
+    <script src="js/api.js"></script>
+    <script src="js/mood.js"></script>
+    <script src="js/chat.js"></script>
+    <script src="js/dump.js"></script>
+  </body>
+</html>

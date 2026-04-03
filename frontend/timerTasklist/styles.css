@@ -1,0 +1,363 @@
+/* ── Variables ─────────────────────────────────────────────── */
+:root {
+  --bg: #f0ede8;
+  --surface: #faf8f5;
+  --surface-2: #edeae4;
+  --text: #2a2420;
+  --text-muted: #8a7d75;
+  --accent: #6b9e78;
+  --accent-light: #d4ead9;
+  --accent-dark: #4a7a57;
+  --danger: #c0392b;
+  --warning: #d4793a;
+  --ok: #5a9e6b;
+  --shadow: 0 4px 20px rgba(44, 36, 32, 0.08);
+  --radius: 18px;
+  --radius-sm: 10px;
+}
+
+/* ── Base ───────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: "DM Sans", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  padding: 20px;
+  transition: background 0.8s ease;
+}
+
+body.focus-mode {
+  background: #e3ede9;
+}
+
+/* ── Top Bar ────────────────────────────────────────────────── */
+.top-bar {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
+
+.top-btn {
+  background: var(--surface);
+  border: 2px solid var(--surface-2);
+  border-radius: 100px;
+  padding: 8px 18px;
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: var(--shadow);
+}
+.top-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent-dark);
+}
+
+/* ── Layout ─────────────────────────────────────────────────── */
+.container {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+@media (max-width: 780px) {
+  .container { grid-template-columns: 1fr; }
+}
+
+/* ── Cards ──────────────────────────────────────────────────── */
+.card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 28px;
+  box-shadow: var(--shadow);
+}
+
+.section-title {
+  font-family: "DM Serif Display", serif;
+  font-size: 1.4rem;
+  color: var(--text);
+  margin-bottom: 20px;
+}
+
+/* ── Timer ──────────────────────────────────────────────────── */
+.presets {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.preset-btn {
+  flex: 1;
+  background: var(--surface-2);
+  border: 2px solid transparent;
+  border-radius: var(--radius-sm);
+  padding: 8px 4px;
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.preset-btn:hover, .preset-btn.active {
+  background: var(--accent-light);
+  border-color: var(--accent);
+  color: var(--accent-dark);
+}
+
+.custom-time {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.custom-time input {
+  flex: 1;
+  background: var(--surface-2);
+  border: 2px solid transparent;
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.9rem;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s;
+}
+.custom-time input:focus { border-color: var(--accent); }
+.set-btn {
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 8px 16px;
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.88rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.set-btn:hover { background: var(--accent-dark); }
+
+.time-display {
+  font-family: "DM Serif Display", serif;
+  font-size: 4.5rem;
+  text-align: center;
+  color: var(--text);
+  letter-spacing: -2px;
+  margin: 8px 0 12px;
+  transition: color 0.3s;
+}
+.time-display.done {
+  color: var(--accent);
+  animation: pulse 0.6s ease-in-out 5;
+}
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.04); }
+}
+
+.adjusters {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  justify-content: center;
+}
+.adj-btn {
+  background: var(--surface-2);
+  border: 2px solid transparent;
+  border-radius: var(--radius-sm);
+  padding: 6px 12px;
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.adj-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent-dark);
+  background: var(--accent-light);
+}
+
+.timer-controls {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.ctrl-btn {
+  flex: 1;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 10px 8px;
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.88rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.start-btn { background: var(--accent); color: white; }
+.start-btn:hover { background: var(--accent-dark); }
+.pause-btn { background: var(--surface-2); color: var(--text); }
+.pause-btn:hover { background: #ddd8d0; }
+.reset-btn { background: var(--surface-2); color: var(--text-muted); }
+.reset-btn:hover { color: var(--text); background: #ddd8d0; }
+
+.sound-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+.sound-label input { accent-color: var(--accent); }
+
+/* ── Task Section ───────────────────────────────────────────── */
+.task-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.task-inputs input[type="text"] {
+  width: 100%;
+  background: var(--surface-2);
+  border: 2px solid transparent;
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.95rem;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s;
+}
+.task-inputs input[type="text"]:focus { border-color: var(--accent); }
+
+.date-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.date-row input[type="datetime-local"] {
+  background: var(--surface-2);
+  border: 2px solid transparent;
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.88rem;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s;
+}
+.date-row input[type="datetime-local"]:focus { border-color: var(--accent); }
+.date-hint {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.add-btn {
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+  width: 100%;
+}
+.add-btn:hover { background: var(--accent-dark); }
+
+/* ── Task List ──────────────────────────────────────────────── */
+#taskList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 480px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.task-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--surface-2);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  transition: opacity 0.2s;
+}
+.task-item.completed { opacity: 0.55; }
+
+.task-checkbox {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent);
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.task-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.task-text {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.task-item.completed .task-text {
+  text-decoration: line-through;
+  color: var(--text-muted);
+}
+
+.task-due {
+  font-size: 0.78rem;
+  font-weight: 400;
+}
+.task-due.overdue { color: var(--danger); }
+.task-due.urgent  { color: var(--warning); }
+.task-due.soon    { color: #c8922a; }
+.task-due.ok      { color: var(--ok); }
+.task-due.no-date { color: var(--text-muted); font-style: italic; }
+
+.delete-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 6px;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+.delete-btn:hover { background: #f5ddd9; color: var(--danger); }
+
+.empty-state {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  font-style: italic;
+  padding: 24px 0;
+}

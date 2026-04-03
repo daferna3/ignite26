@@ -1,0 +1,1 @@
+change timer to be better in case of dont have all info, also add more time adjusters
