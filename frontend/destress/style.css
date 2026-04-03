@@ -1,0 +1,195 @@
+
+/* each section has their own section so they can be styled individually*/
+
+/* breathe section */
+
+#breathe-popup {
+    background: white;
+    color: rgb(21, 10, 28);
+    padding: 40px;
+    border-radius: 15px;
+    text-align: center;
+}
+
+.circle {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 100px;
+    height: 100px;
+    background: rgb(29, 18, 70);
+    border-radius: 50%;
+    animation: pulse 19s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+    }
+    21% {
+        transform: translate(-50%, -50%) scale(1.8);
+    }
+
+    58% {
+        transform: translate(-50%, -50%) scale(1.8);
+    }
+
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+#in, #hold, #out {
+    position: fixed;
+    top: 70%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+}
+
+/* in 4 */
+#in {
+    animation: inhale-text 19s infinite;
+}
+
+/* hold 7 */
+#hold {
+    animation: hold-text 19s infinite;
+}
+
+/* out 8 */
+#out {
+    animation: exhale-text 19s infinite;
+}
+
+/* inhale */
+@keyframes inhale-text {
+    0% { opacity: 1; }
+    21% { opacity: 1; }
+
+    25% { opacity: 0; }
+    100% { opacity: 0; }
+}
+
+/* hold */
+@keyframes hold-text {
+    0% { opacity: 0; }
+    21% { opacity: 0; }
+
+    25% { opacity: 1; }
+    58% { opacity: 1; }
+
+    62% { opacity: 0; }
+    100% { opacity: 0; }
+}
+
+/* exhale */
+@keyframes exhale-text {
+    0% { opacity: 0; }
+    58% { opacity: 0; }
+
+    62% { opacity: 1; }
+    100% { opacity: 1; }
+}
+
+/* bounce section
+
+#bounce-popup {
+    background: rgb(0, 0, 0);
+    color: rgb(23, 34, 97);
+    padding: 40px;
+    border-radius: 15px;
+    text-align: center;
+}
+
+.square {
+  position: absolute;
+  background-color: #ffffff;
+  width: 100px;
+  height: 100px;
+
+}
+*/
+
+/* bounce section */
+
+#bounce-popup {
+    background: rgb(0, 0, 0);
+    color: rgb(23, 34, 97);
+    padding: 40px;
+    border-radius: 15px;
+    text-align: center;
+}
+
+
+#bounce-popup .square {
+    position: fixed;
+    width: 100px;
+    height: 100px;
+    background-color: white;
+
+    /* horizontal & vertical movement animations */
+    animation:
+        bounceX 5s linear infinite alternate,
+        bounceY 3s linear infinite alternate;
+}
+
+/* horizontal */
+@keyframes bounceX {
+    from { left: 0; }
+    to { left: calc(100vw - 100px); }
+}
+
+/* vertical */
+@keyframes bounceY {
+    from { top: 0; }
+    to { top: calc(100vh - 100px); }
+}
+
+
+/* wave section */
+
+#wave-popup {
+    background: rgb(0, 0, 0);
+    color: rgb(23, 34, 97);
+    padding: 40px;
+    border-radius: 15px;
+    text-align: center;
+}
+
+/* stretch section */
+
+#stretch-popup {
+    background: rgb(0, 0, 0);
+    color: rgb(23, 34, 97);
+    padding: 40px;
+    border-radius: 15px;
+    text-align: center;
+}
+
+/* gen popup stuff */
+
+.popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.back-button {
+    color: white;
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    padding: 6px 12px;
+    cursor: pointer;
+    background: rgb(0, 0, 0);
+    border: 10px whitesmoke;
+    border-radius: 8px;
+    z-index: 10;
+}
