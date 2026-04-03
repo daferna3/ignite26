@@ -138,7 +138,7 @@
 /* horizontal */
 @keyframes bounceX {
     from { left: 0; }
-    to { left: calc(100vw - 100px); } /* 100vw minus square width */
+    to { left: calc(100vw - 100px); }
 }
 
 /* vertical */
