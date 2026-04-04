@@ -410,10 +410,10 @@ body.focus-mode {
 }
 
 .focus-timer {
-  font-size: 8rem;
+  position: absolute;
+  font-size: 4.5rem;
   font-family: "DM Serif Display";
-  margin-bottom: 30px;
-  letter-spacing: -2px;
+  text-align: center;
   animation: pulseFocus 2s infinite ease-in-out;
 }
 
@@ -483,13 +483,45 @@ body.focus-mode {
 }
 
 /* Improve focus timer */
-.focus-timer {
-  font-size: 5rem;
-  font-family: "DM Serif Display";
-  margin-bottom: 12px;
-}
-
 .focus-task {
   font-size: 1.3rem;
   opacity: 0.85;
+}
+
+.focus-controls {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  z-index: 1;
+}
+
+.focus-back {
+  z-index: 2;
+}
+
+.focus-left,
+.focus-right {
+  flex: 1;
+  cursor: pointer;
+}
+
+.focus-left:hover {
+  background: rgba(255,255,255,0.05);
+}
+
+.focus-right:hover {
+  background: rgba(255,255,255,0.05);
+}
+
+.focus-circle-container {
+  position: relative;
+  width: 260px;
+  height: 260px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.progress-ring-circle {
+  transition: stroke-dashoffset 0.8s linear;
 }

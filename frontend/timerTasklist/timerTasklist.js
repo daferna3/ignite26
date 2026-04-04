@@ -28,18 +28,23 @@ let audioUnlocked = false;
 function unlockAudio() {
   if (audioUnlocked) return;
 
-  const bg = document.getElementById("bgSound");
-  const bell = document.getElementById("bellSound");
-  const alarm = document.getElementById("alarmSound");
+  const sounds = [
+    "bgSound",
+    "bellSound",
+    "alarmSound",
+    "focusAlarm"
+  ];
 
-  [bg, bell, alarm].forEach(a => {
-    if (a) {
-      a.volume = 0;
-      a.play().then(() => {
-        a.pause();
-        a.currentTime = 0;
-      }).catch(() => {});
-    }
+  sounds.forEach(id => {
+    const audio = document.getElementById(id);
+    if (!audio) return;
+
+    audio.volume = 0.01; // safer than 0
+    audio.play().then(() => {
+      audio.pause();
+      audio.currentTime = 0;
+      audio.volume = 1; // reset for real use
+    }).catch(() => {});
   });
 
   audioUnlocked = true;
@@ -92,8 +97,14 @@ function setCustomTimer() {
 }
 
 // Adjust time by +/- minutes (works whether running or paused)
-function adjustTime(minutes) {
-  time = Math.max(0, time + Math.round(minutes * 60));
+function adjustTime(value) {
+  // If small number, assume minutes (from UI buttons)
+  if (Math.abs(value) <= 10) {
+    value = value * 60;
+  }
+
+  time = Math.max(0, time + value);
+  defaultTime = Math.max(defaultTime, time);
   updateDisplay();
 }
 
@@ -126,7 +137,11 @@ function startTimer() {
       clearInterval(interval);
       interval = null;
 
-      playAlarm();
+      if (focusOn) {
+        playFocusAlarm();
+      } else {
+        playAlarm();
+      }
 
       document.getElementById("time").classList.add("done");
       setTimeout(() => document.getElementById("time").classList.remove("done"), 3000);
@@ -197,6 +212,13 @@ function toggleFocus() {
 
   focusView.classList.toggle("hidden", !focusOn);
   mainUI.style.display = focusOn ? "none" : "grid";
+
+  // 🔑 Stop ALL alarms when switching modes
+  document.getElementById("alarmSound").pause();
+  document.getElementById("alarmSound").currentTime = 0;
+
+  document.getElementById("focusAlarm").pause();
+  document.getElementById("focusAlarm").currentTime = 0;
 
   if (focusOn) {
     setupCircle();
@@ -342,6 +364,15 @@ function loadTasks() {
 }
 
 document.addEventListener("click", unlockAudio, { once: true });
+
+function playFocusAlarm() {
+  let alarm = document.getElementById("focusAlarm");
+  if (alarm) {
+    alarm.currentTime = 0;
+    alarm.volume = 0.9;
+    alarm.play().catch(err => console.log("Focus alarm error:", err));
+  }
+}
 
 loadTasks();
 updateFocusTask();
