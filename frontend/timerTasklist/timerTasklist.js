@@ -55,7 +55,7 @@ function updateDisplay() {
   let focusTime = document.getElementById("focusTime");
   if (focusTime) focusTime.textContent = formatted;
 
-  // 🔥 Update circle progress
+  // Update circle progress
   if (circle && circumference) {
     let progress = time / defaultTime;
     let offset = circumference * (1 - progress);
@@ -100,10 +100,18 @@ function adjustTime(minutes) {
 function playBell() {
   let bell = document.getElementById("bellSound");
   if (bell) {
-    console.log("BELL TRIGGERED");
     bell.currentTime = 0;
     bell.volume = 0.6;
-    bell.play().catch(err => console.log("BELL ERROR:", err));
+    bell.play().catch(err => console.log("Bell error:", err));
+  }
+}
+
+function playAlarm() {
+  let alarm = document.getElementById("alarmSound");
+  if (alarm) {
+    alarm.currentTime = 0;
+    alarm.volume = 0.8;
+    alarm.play().catch(err => console.log("Alarm error:", err));
   }
 }
 
@@ -118,10 +126,8 @@ function startTimer() {
       clearInterval(interval);
       interval = null;
 
-      // Alarm always plays when timer ends — not optional
       playAlarm();
 
-      // Flash the timer display when done
       document.getElementById("time").classList.add("done");
       setTimeout(() => document.getElementById("time").classList.remove("done"), 3000);
 
@@ -148,6 +154,7 @@ updateDisplay();
 
 // ── SOUND ─────────────────────────────────────────────────────────────────
 
+let soundPlaying = false; // ← was missing, caused toggleSound() to crash
 let fadeInterval = null;
 
 function toggleSound() {
@@ -155,15 +162,11 @@ function toggleSound() {
   let btn = document.getElementById("soundBtn");
 
   if (soundPlaying) {
-    // STOP sound
     if (fadeInterval) clearInterval(fadeInterval);
-
     audio.pause();
     audio.currentTime = 0;
     btn.textContent = "🔇 Calm Sound";
-
   } else {
-    // START sound with fade
     audio.volume = 0;
     audio.play().catch(() => {});
     btn.textContent = "🔊 Calm Sound";
@@ -196,7 +199,7 @@ function toggleFocus() {
   mainUI.style.display = focusOn ? "none" : "grid";
 
   if (focusOn) {
-    setupCircle();      // 👈 initialize circle
+    setupCircle();
   }
 
   updateFocusTask();
@@ -221,7 +224,6 @@ function addTask() {
     completed: false
   });
 
-  // Sort: tasks WITH due dates first (by date), then tasks WITHOUT due dates
   tasks.sort((a, b) => {
     if (a.due && b.due) return a.due - b.due;
     if (a.due) return -1;
@@ -249,17 +251,14 @@ function renderTasks() {
     let li = document.createElement("li");
     li.className = "task-item" + (task.completed ? " completed" : "");
 
-    // Checkbox
     let checkbox = document.createElement("input");
     checkbox.type = "checkbox";
     checkbox.className = "task-checkbox";
     checkbox.checked = task.completed;
     checkbox.onchange = () => {
       let wasCompleted = tasks[index].completed;
-
       tasks[index].completed = checkbox.checked;
 
-      // Only play when going from incomplete → complete
       if (!wasCompleted && checkbox.checked) {
         playBell();
       }
@@ -269,23 +268,19 @@ function renderTasks() {
       updateFocusTask();
     };
 
-    // Task info wrapper
     let info = document.createElement("div");
     info.className = "task-info";
 
-    // Task text
     let span = document.createElement("span");
     span.className = "task-text";
     span.textContent = task.text;
 
-    // Due date label
     let dueLabel = document.createElement("span");
     dueLabel.className = "task-due";
 
     if (task.due) {
       let now = new Date();
-      let diff = (task.due - now) / (1000 * 60); // diff in minutes
-
+      let diff = (task.due - now) / (1000 * 60);
       dueLabel.textContent = `Due: ${task.due.toLocaleString()}`;
 
       if (!task.completed) {
@@ -302,7 +297,6 @@ function renderTasks() {
     info.appendChild(span);
     info.appendChild(dueLabel);
 
-    // Delete button
     let deleteBtn = document.createElement("button");
     deleteBtn.className = "delete-btn";
     deleteBtn.textContent = "✕";
@@ -321,7 +315,6 @@ function renderTasks() {
 
 function updateFocusTask() {
   let focusTask = document.getElementById("focusTask");
-
   let nextTask = tasks.find(t => !t.completed);
 
   if (nextTask) {
@@ -345,16 +338,6 @@ function loadTasks() {
       due: t.due ? new Date(t.due) : null
     }));
     renderTasks();
-  }
-}
-
-function playAlarm() {
-  let alarm = document.getElementById("alarmSound");
-  if (alarm) {
-    console.log("ALARM TRIGGERED");
-    alarm.currentTime = 0;
-    alarm.volume = 0.8;
-    alarm.play().catch(err => console.log("ALARM ERROR:", err));
   }
 }
 
