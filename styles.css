@@ -151,7 +151,7 @@ body {
 
 .palette-dot[data-target="1"] { background: #b06aff; }
 .palette-dot[data-target="2"] { background: #ff7aa2; }
-.palette-dot[data-target="3"] { background: #e07b00; }
+.palette-dot[data-target="3"] { background: #6b9e78; }
 .palette-dot[data-target="4"] { background: #f2c14e; }
 
 .palette-dot.active {

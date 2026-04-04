@@ -114,27 +114,34 @@
     <ul id="taskList"></ul>
   </div>
 
+  <div class="palette-switcher">
+    <p>Theme</p>
+    <button class="palette-dot" data-target="1"></button>
+    <button class="palette-dot" data-target="2"></button>
+    <button class="palette-dot" data-target="3"></button>
+    <button class="palette-dot" data-target="4"></button>
+  </div>  
+
 </div>
 
-<script src="timerTasklist.js">
-  document.addEventListener("DOMContentLoaded", () => {
-    // Apply saved theme
-    const savedTheme = localStorage.getItem("theme") || "1";
-    document.body.setAttribute("data-palette", savedTheme);
+<script src="timerTasklist.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const dots = document.querySelectorAll('.palette-dot');
+  const savedTheme = localStorage.getItem("theme") || "1";
+  document.body.setAttribute("data-palette", savedTheme);
 
-    // Optional: highlight active dot if the page has the switcher
-    const dots = document.querySelectorAll('.palette-dot');
-    dots.forEach(dot => {
-      if(dot.dataset.target === savedTheme) dot.classList.add('active');
-      dot.addEventListener('click', () => {
-        const target = dot.dataset.target;
-        document.body.setAttribute('data-palette', target);
-        localStorage.setItem('theme', target);
-        dots.forEach(d => d.classList.remove('active'));
-        dot.classList.add('active');
-      });
+  dots.forEach(dot => {
+    if(dot.dataset.target === savedTheme) dot.classList.add('active');
+    dot.addEventListener('click', () => {
+      const target = dot.dataset.target;
+      document.body.setAttribute('data-palette', target);
+      localStorage.setItem('theme', target);
+      dots.forEach(d => d.classList.remove('active'));
+      dot.classList.add('active');
     });
   });
+});
 </script>
 </body>
 </html>
