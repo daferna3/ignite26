@@ -157,3 +157,19 @@ body {
 .palette-dot.active {
   outline: 2px solid white;
 }
+
+/* Grouping your specific UI words */
+.date-display, 
+.pause-btn, 
+.home-link, 
+.focus-mode, 
+.calm-sound,
+.mood-anxious, 
+.mood-overwhelmed, 
+.mood-sad, 
+.mood-stressed,
+.welcome-msg {
+    color: var(--ui-text); /* This now looks at the palette's specific color */
+    transition: color 0.4s ease;
+    font-weight: 500;
+}

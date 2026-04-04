@@ -1,36 +1,39 @@
 /* themes.css */
 
 /* DEFAULT THEME PALETTES */
+/* Default / Light Theme */
+/* 1 — Default (Void Violet) */
 :root {
   --bg: #0d0a14;
   --card: rgba(40, 24, 72, 0.65);
   --text: #e8d8ff;
   --accent: #b06aff;
   --soft: #a888cc;
+  --ui-text: #e8d8ff; /* Match main text or accent */
 }
 
+/* 2 — Deep Forest */
 [data-palette="2"] {
   --bg: #0f1f17;
-  --card: rgba(22, 48, 34, 0.75);
   --text: #e8fff1;
   --accent: #ff7aa2;
-  --soft: #c48a9a;
+  --ui-text: #ff7aa2; /* Make UI words pop with the pink accent */
 }
 
+/* 3 — Green Beach */
 [data-palette="3"] {
   --bg: #d4ead9;
-  --card: rgba(255, 250, 240, 0.85);
   --text: #2a2420;
   --accent: #6b9e78;
-  --soft: #a3c9a8;
+  --ui-text: #2a2420; /* Dark text for light background */
 }
 
+/* 4 — Teal + Gold */
 [data-palette="4"] {
   --bg: #0f2a2e;
-  --card: rgba(20, 60, 65, 0.75);
   --text: #e6ffff;
   --accent: #f2c14e;
-  --soft: #7ed1d6;
+  --ui-text: #f2c14e; /* Gold stands out well here */
 }
 
 /* PALETTE SWITCHER UI */
