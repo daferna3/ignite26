@@ -40,26 +40,42 @@
     <div class="popup" id="wave-popup">
         <button type="button" class="back-button">Go back</button>
 
-        <video id="wave-video" loop muted>
-            <source src="resources/ocean/pixels.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
+    <video id="wave-video" loop muted src="resources/ocean/waves.mp4"></video>
+
 
         <audio id="wave-audio" loop>
-            <source src="resources/ocean/sea-audio.mp3" type="audio/mpeg">
+            <source src="resources/ocean/wave-audio.mp3" type="audio/mpeg">
         </audio>
+
+        <button id="wave-toggle">☰</button>
+        <div id="wave-options"></div>
+
     </div>
 
 
     <div class="popup" id="stretch-popup">
 
         <button type="button" class="back-button">Go back</button>
-        <h1></h1>
-        <button type="button" class="stretch-start">Start stretching!</button>
+
+        <div class="stretch-content">
+            <h2 id="stretch-step">Got five minutes?</h2>
+            <p id="stretch-description">Click "Next" to start stretching.</p>
+            <div id="stretch-buttons">
+                <button id="next-stretch">Next</button>
+                <button id="pause-stretch" style="display:none;">Pause</button>
+                <button id="skip-stretch" style="display:none;">Skip</button>
+            </div>
+        </div>
+
+        <div id="stretch-progress-container">
+            <div id="stretch-progress-bar"></div>
+        </div>
+
+        <div id="stretch-source">
+            Source: <a href="https://www.ccohs.ca/oshanswers/ergonomics/office/stretching.html" target="_blank">Canadian Centre for Occupational Health and Safety</a>
+        </div>
 
     </div>
-
-
 
 
     <script src="script.js"></script>
