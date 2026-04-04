@@ -40,6 +40,11 @@ body.focus-mode {
   margin-bottom: 20px;
 }
 
+/* If you want Home on the left and the others on the right: */
+.top-btn:first-child {
+  margin-right: auto; /* Pushes all subsequent buttons to the far right */
+}
+
 .top-btn {
   background: var(--surface);
   border: 2px solid var(--surface-2);
@@ -196,19 +201,45 @@ body.focus-mode {
   flex: 1;
   border: none;
   border-radius: var(--radius-sm);
-  padding: 10px 8px;
+  padding: 12px 10px;
   font-family: "DM Sans", sans-serif;
-  font-size: 0.88rem;
+  font-size: 0.9rem;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow);
 }
-.start-btn { background: var(--accent); color: white; }
-.start-btn:hover { background: var(--accent-dark); }
-.pause-btn { background: var(--surface-2); color: var(--text); }
-.pause-btn:hover { background: #ddd8d0; }
-.reset-btn { background: var(--surface-2); color: var(--text-muted); }
-.reset-btn:hover { color: var(--text); background: #ddd8d0; }
+
+/* START */
+.start-btn {
+  background: var(--accent);
+  color: white;
+}
+.start-btn:hover {
+  background: var(--accent-dark);
+  transform: translateY(-1px);
+}
+
+/* PAUSE */
+.pause-btn {
+  background: var(--surface-2);
+  color: var(--text);
+}
+.pause-btn:hover {
+  background: #ddd8d0;
+  transform: translateY(-1px);
+}
+
+/* RESET */
+.reset-btn {
+  background: transparent;
+  color: var(--text-muted);
+  border: 2px dashed var(--surface-2);
+}
+.reset-btn:hover {
+  color: var(--text);
+  border-color: var(--accent);
+}
 
 .sound-label {
   display: flex;
@@ -360,4 +391,137 @@ body.focus-mode {
   font-size: 0.9rem;
   font-style: italic;
   padding: 24px 0;
+}
+
+.focus-view {
+  position: fixed;
+  inset: 0;
+  background: #0f172a;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.hidden {
+  display: none;
+}
+
+.focus-timer {
+  position: absolute;
+  font-size: 4.5rem;
+  font-family: "DM Serif Display";
+  text-align: center;
+  animation: pulseFocus 2s infinite ease-in-out;
+}
+
+@keyframes pulseFocus {
+  0%, 100% { transform: scale(1); opacity: 0.9; }
+  50% { transform: scale(1.05); opacity: 1; }
+}
+
+.focus-task {
+  font-size: 1.4rem;
+  opacity: 0.8;
+}
+
+.focus-exit {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: rgba(255,255,255,0.1);
+  border: none;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: background 0.2s;
+}
+.focus-exit:hover {
+  background: rgba(255,255,255,0.2);
+}
+
+/* Focus Back Button */
+.focus-back {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: rgba(255,255,255,0.1);
+  border: none;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.focus-back:hover {
+  background: rgba(255,255,255,0.2);
+}
+
+/* Progress Ring */
+.progress-ring {
+  transform: rotate(-90deg);
+  margin-bottom: 20px;
+}
+
+.progress-bg {
+  fill: transparent;
+  stroke: rgba(255,255,255,0.1);
+  stroke-width: 10;
+}
+
+.progress-ring-circle {
+  fill: transparent;
+  stroke: #6b9e78;
+  stroke-width: 10;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1s linear;
+}
+
+/* Improve focus timer */
+.focus-task {
+  font-size: 1.3rem;
+  opacity: 0.85;
+}
+
+.focus-controls {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  z-index: 1;
+}
+
+.focus-back {
+  z-index: 2;
+}
+
+.focus-left,
+.focus-right {
+  flex: 1;
+  cursor: pointer;
+}
+
+.focus-left:hover {
+  background: rgba(255,255,255,0.05);
+}
+
+.focus-right:hover {
+  background: rgba(255,255,255,0.05);
+}
+
+.focus-circle-container {
+  position: relative;
+  width: 260px;
+  height: 260px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.progress-ring-circle {
+  transition: stroke-dashoffset 0.8s linear;
 }
