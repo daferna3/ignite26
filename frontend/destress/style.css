@@ -104,6 +104,8 @@
     text-align: center;
 }
 
+.card-title { font-family: "DM Serif Display", serif; font-size: 2.5rem; color: #2c2420; margin-bottom: 4px; }
+.card-subtitle { font-family: "DM Sans", sans-serif; font-size: 1.1rem; color: #8a7d75; margin-bottom: 40px; text-transform: lowercase; }
 
 #bounce-popup .square {
     position: fixed;
@@ -228,8 +230,6 @@
     
     display: none;
     flex-direction: column;
-
-    justify-content: center; 
     align-items: center;
     
     text-align: center;
@@ -353,7 +353,13 @@
     color: #6b9e78;
 }
 
+.breathe-active #in { animation: inhale-text 19s infinite; }
+.breathe-active #hold { animation: hold-text 19s infinite; }
+.breathe-active #out { animation: exhale-text 19s infinite; }
 
+@keyframes inhale-text { 0%, 21% { opacity: 1; } 25%, 100% { opacity: 0; } }
+@keyframes hold-text { 0%, 21% { opacity: 0; } 25%, 58% { opacity: 1; } 62%, 100% { opacity: 0; } }
+@keyframes exhale-text { 0%, 58% { opacity: 0; } 62%, 100% { opacity: 1; } }
 
 /* gen popup stuff */
 

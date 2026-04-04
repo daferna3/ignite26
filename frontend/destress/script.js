@@ -1,139 +1,101 @@
-
-// go back
-
-const genPopup = document.querySelectorAll(".popup");
+// Navigation logic
+const homeBtn = document.getElementById("main-home-btn");
 const backButtons = document.querySelectorAll(".back-button");
+const popups = document.querySelectorAll(".popup");
 
-backButtons.forEach(button => {
-    button.addEventListener("click", () => {
-        const popup = button.closest(".popup");
-        popup.style.display = "none";
-    });
-});
-
-
-// breathe section
-
-const breathePage = document.getElementById("breathe-popup");
-const breatheButton = document.getElementById("breathe-button");
-
-breatheButton.addEventListener("click", () => {
-    breathePage.style.display = "flex";
-});
-
-// bounce section
-
-const bouncePage = document.getElementById("bounce-popup");
-const bounceButton = document.getElementById("bounce-button");
-
-bounceButton.addEventListener("click", () => {
-    bouncePage.style.display = "flex";
-});
-
-const square = document.querySelector("#bounce-popup .square");
-
-function getRandomColor() {
-  const r = Math.floor(Math.random() * 256);
-  const g = Math.floor(Math.random() * 256);
-  const b = Math.floor(Math.random() * 256);
-  return `rgb(${r}, ${g}, ${b})`;
+function openPopup(id) {
+    document.getElementById(id).style.display = "flex";
+    homeBtn.style.display = "none"; // Hide home button when in popup
 }
 
-square.addEventListener("click", () => {
-  square.style.backgroundColor = getRandomColor();
+function closeAllPopups() {
+    popups.forEach(p => p.style.display = "none");
+    homeBtn.style.display = "block"; // Show home button when back in menu
+    
+    // Stop all media/timers
+    resetBreathe();
+    resetStretch();
+    stopWaves();
+}
+
+backButtons.forEach(btn => btn.addEventListener("click", closeAllPopups));
+
+// Breathe logic
+const breatheBtn = document.getElementById("breathe-button");
+const startBreatheBtn = document.getElementById("start-breathe-btn");
+const breatheStartScreen = document.getElementById("breathe-start-screen");
+const breatheExerciseArea = document.getElementById("breathe-exercise-area");
+
+breatheBtn.addEventListener("click", () => openPopup("breathe-popup"));
+
+startBreatheBtn.addEventListener("click", () => {
+    breatheStartScreen.style.display = "none";
+    breatheExerciseArea.style.display = "block";
+    breatheExerciseArea.classList.add("breathe-active");
 });
 
-// wave section
+function resetBreathe() {
+    breatheStartScreen.style.display = "block";
+    breatheExerciseArea.style.display = "none";
+    breatheExerciseArea.classList.remove("breathe-active");
+}
 
-const wavePage = document.getElementById("wave-popup");
-const waveButton = document.getElementById("wave-button");
+// Bounce logic
+const bounceBtn = document.getElementById("bounce-button");
+const square = document.querySelector(".square");
+
+bounceBtn.addEventListener("click", () => openPopup("bounce-popup"));
+square.addEventListener("click", () => {
+    square.style.backgroundColor = `rgb(${Math.random()*255},${Math.random()*255},${Math.random()*255})`;
+});
+
+// Waves logic
+const waveBtn = document.getElementById("wave-button");
 const waveVideo = document.getElementById("wave-video");
 const waveAudio = document.getElementById("wave-audio");
-const waveBackButton = wavePage.querySelector(".back-button");
-
 const waveToggle = document.getElementById("wave-toggle");
 const waveOptionsContainer = document.getElementById("wave-options");
 
-const waveVideos = [
-    "Waves",
-    "pixels-bw",
-    "ascii-blue"
-];
+waveBtn.addEventListener("click", () => {
+    openPopup("wave-popup");
+    waveVideo.play();
+    waveAudio.volume = 0;
+    waveAudio.play();
+    // Fade in audio
+    let vol = 0;
+    const fade = setInterval(() => {
+        vol += 0.05;
+        waveAudio.volume = Math.min(vol, 1);
+        if (vol >= 1) clearInterval(fade);
+    }, 100);
+});
 
+function stopWaves() {
+    waveVideo.pause();
+    waveAudio.pause();
+    waveOptionsContainer.querySelectorAll(".wave-option").forEach(b => b.classList.remove("show"));
+}
+
+const waveVideos = ["Waves", "pixels-bw", "ascii-blue"];
 waveVideos.forEach(name => {
     const btn = document.createElement("button");
-    btn.classList.add("wave-option");
-    btn.textContent = name; // text on bubble
-    btn.addEventListener("click", () => {
+    btn.className = "wave-option";
+    btn.textContent = name;
+    btn.onclick = () => {
         waveVideo.src = `resources/ocean/${name.toLowerCase()}.mp4`;
         waveVideo.play();
-        toggleWaveOptions(false); // collapse
-    });
+        waveOptionsContainer.querySelectorAll(".wave-option").forEach(b => b.classList.remove("show"));
+    };
     waveOptionsContainer.appendChild(btn);
 });
 
-function toggleWaveOptions(show) {
-    const options = waveOptionsContainer.querySelectorAll(".wave-option");
-    options.forEach((btn, i) => {
-        if (show) {
-            setTimeout(() => btn.classList.add("show"), i * 50);
-        } else {
-            btn.classList.remove("show");
-        }
+waveToggle.onclick = () => {
+    waveOptionsContainer.querySelectorAll(".wave-option").forEach((b, i) => {
+        setTimeout(() => b.classList.toggle("show"), i * 50);
     });
-}
+};
 
-// Open wave popup with video & audio fade-in
-waveButton.addEventListener("click", () => {
-    wavePage.style.display = "flex";
-    waveVideo.play();
-
-    waveAudio.src = "resources/ocean/wave-audio.mp3";
-    waveAudio.load();
-    waveAudio.volume = 0; // start muted
-    waveAudio.play();
-
-    let fadeDuration = 2000; // 2 secs
-    let fadeSteps = 20;
-    let stepTime = fadeDuration / fadeSteps;
-    let currentStep = 0;
-
-    let fadeInterval = setInterval(() => {
-        currentStep++;
-        waveAudio.volume = Math.min(currentStep / fadeSteps, 1);
-        if (currentStep >= fadeSteps) clearInterval(fadeInterval);
-    }, stepTime);
-});
-
-waveBackButton.addEventListener("click", () => {
-    wavePage.style.display = "none";
-
-    waveVideo.pause();
-    waveVideo.currentTime = 0;
-
-    waveAudio.pause();
-    waveAudio.currentTime = 0;
-    waveAudio.src = "";
-    waveAudio.load();
-    toggleWaveOptions(false); // hide bubbles
-});
-
-waveToggle.addEventListener("click", () => {
-    const anyVisible = Array.from(waveOptionsContainer.children).some(
-        btn => btn.classList.contains("show")
-    );
-    toggleWaveOptions(!anyVisible);
-});
-
-// stretch section
-
-const stretchPage = document.getElementById("stretch-popup");
-const stretchButton = document.getElementById("stretch-button");
-
-stretchButton.addEventListener("click", () => {
-    stretchPage.style.display = "flex";
-});
-
+// Stretch logic
 const stretches = [
 
     {
@@ -296,115 +258,98 @@ const stretches = [
 
 let currentStretch = 0;
 let stretchTimeout;
-let remainingTime = 0;
-let stretchStartTime = 0;
-let isPaused = false;
+let stretchStartTime;
 let totalDuration = 0;
+let remainingTime = 0;
+let isPaused = false;
 
-const stretchStep = document.getElementById("stretch-step");
-const stretchDesc = document.getElementById("stretch-description");
-const nextStretchButton = document.getElementById("next-stretch");
-const pauseButton = document.getElementById("pause-stretch");
-const skipButton = document.getElementById("skip-stretch");
-const backButton = document.querySelector("#stretch-popup .back-button");
+const stretchBtn = document.getElementById("stretch-button");
+const nextBtn = document.getElementById("next-stretch");
+const pauseBtn = document.getElementById("pause-stretch");
+const skipBtn = document.getElementById("skip-stretch");
 const progressBar = document.getElementById("stretch-progress-bar");
 
+stretchBtn.addEventListener("click", () => openPopup("stretch-popup"));
+
 function updateProgressBar() {
-    if (!isPaused) {
-        const elapsed = totalDuration - remainingTime + (Date.now() - stretchStartTime);
-        let progress = (elapsed / totalDuration) * 100;
-
-        if (progress > 100) progress = 100;
-        progressBar.style.width = progress + "%";
-
-        if (progress < 100) {
-            requestAnimationFrame(updateProgressBar);
-        }
+    if (isPaused || totalDuration === 0) return;
+    
+    const elapsed = Date.now() - stretchStartTime;
+    const progress = Math.min((elapsed / totalDuration) * 100, 100);
+    progressBar.style.width = progress + "%";
+    
+    if (progress < 100) {
+        requestAnimationFrame(updateProgressBar);
     }
 }
 
-function showStretch(index, duration = null) {
-    if (index < stretches.length) {
-        const stretch = stretches[index];
-        stretchStep.textContent = stretch.name;
-        stretchDesc.textContent = stretch.description;
+function showStretch(index) {
+    if (index >= stretches.length) return resetStretch();
+    
+    const stretch = stretches[index];
+    document.getElementById("stretch-step").textContent = stretch.name;
+    document.getElementById("stretch-description").textContent = stretch.description;
 
-        remainingTime = duration || stretch.duration;
+    if (stretch.duration > 0) {
+        totalDuration = stretch.duration;
         stretchStartTime = Date.now();
-        isPaused = false;
-
-        pauseButton.style.display = "inline-block";
-        skipButton.style.display = "inline-block";
-        nextStretchButton.style.display = "none";
-
-        // reset progress bar
-        progressBar.style.width = "0%";
+        nextBtn.style.display = "none";
+        pauseBtn.style.display = "inline-block";
+        skipBtn.style.display = "inline-block";
+        
         requestAnimationFrame(updateProgressBar);
-
-        // start timer
         stretchTimeout = setTimeout(() => {
             currentStretch++;
             showStretch(currentStretch);
-        }, remainingTime);
+        }, totalDuration);
     } else {
-        stretchStep.textContent = "Congratulations!";
-        stretchDesc.textContent = "You're done for now.";
-        nextStretchButton.style.display = "";
-        nextStretchButton.textContent = "Go again";
-        pauseButton.style.display = "none";
-        skipButton.style.display = "none";
+        nextBtn.style.display = "inline-block";
+        nextBtn.textContent = "Restart";
+        pauseBtn.style.display = "none";
+        skipBtn.style.display = "none";
         progressBar.style.width = "0%";
-        currentStretch = 0;
     }
 }
 
-
-nextStretchButton.addEventListener("click", () => {
-    nextStretchButton.style.display = "none";
+nextBtn.onclick = () => {
+    if (nextBtn.textContent === "Restart") currentStretch = 0;
     showStretch(currentStretch);
-});
+};
 
-// pause / resume
-pauseButton.addEventListener("click", () => {
+pauseBtn.onclick = () => {
     if (!isPaused) {
-        // pause timer
         clearTimeout(stretchTimeout);
-        remainingTime -= (Date.now() - stretchStartTime);
-        pauseButton.textContent = "Resume";
+        remainingTime = totalDuration - (Date.now() - stretchStartTime);
         isPaused = true;
+        pauseBtn.textContent = "Resume";
     } else {
-        // resume timer
-        stretchStartTime = Date.now();
+        stretchStartTime = Date.now() - (totalDuration - remainingTime);
         stretchTimeout = setTimeout(() => {
             currentStretch++;
             showStretch(currentStretch);
         }, remainingTime);
-        pauseButton.textContent = "Pause";
         isPaused = false;
+        pauseBtn.textContent = "Pause";
         requestAnimationFrame(updateProgressBar);
     }
-});
+};
 
-
-skipButton.addEventListener("click", () => {
+skipBtn.onclick = () => {
     clearTimeout(stretchTimeout);
     currentStretch++;
     showStretch(currentStretch);
-});
+};
 
-backButton.addEventListener("click", () => {
+function resetStretch() {
     clearTimeout(stretchTimeout);
     currentStretch = 0;
-
-    nextStretchButton.style.display = "inline-block";
-    nextStretchButton.textContent = "Next";
-
-    pauseButton.style.display = "none";
-    pauseButton.textContent = "Pause";
-
-    skipButton.style.display = "none";
-
-    stretchStep.textContent = "Got five minutes?";
-    stretchDesc.textContent = 'Click "Next" to start stretching.';
+    isPaused = false;
+    totalDuration = 0;
     progressBar.style.width = "0%";
-});
+    document.getElementById("stretch-step").textContent = "Got five minutes?";
+    document.getElementById("stretch-description").textContent = 'Click "Next" to start stretching.';
+    nextBtn.style.display = "inline-block";
+    nextBtn.textContent = "Next";
+    pauseBtn.style.display = "none";
+    skipBtn.style.display = "none";
+}
