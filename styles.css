@@ -1,27 +1,92 @@
+/* ═══════════════════════
+   PALETTES
+═══════════════════════ */
+
+/* 1 — Default (Void Violet) */
+:root {
+  --bg: #0d0a14;
+  --card: rgba(40, 24, 72, 0.65);
+  --text: #e8d8ff;
+  --accent: #b06aff;
+  --soft: #a888cc;
+}
+
+[data-palette="2"] {
+  --bg: #0f1f17;
+  --text: #e8fff1;
+}
+
+[data-palette="3"] {
+  --bg: #f0f4fa;
+  --text: #001f44;
+}
+
+[data-palette="4"] {
+  --bg: #0f2a2e;
+  --text: #e6ffff;
+}
+
+/* 2 — Deep Forest + Pink */
+[data-palette="2"] {
+  --bg: #0f1f17;
+  --card: rgba(22, 48, 34, 0.75);
+  --text: #e8fff1;
+  --accent: #ff7aa2;
+  --soft: #c48a9a;
+}
+
+/* 3 — High Contrast (SWAPPED) */
+[data-palette="3"] {
+  --bg: #f0f4fa;
+  --card: rgba(255,255,255,0.8);
+  --text: #001f44;
+  --accent: #e07b00;
+  --soft: #3366aa;
+}
+
+/* 4 — NEW Colorblind Friendly (Teal + Gold) */
+[data-palette="4"] {
+  --bg: #0f2a2e;
+  --card: rgba(20, 60, 65, 0.75);
+  --text: #e6ffff;
+  --accent: #f2c14e;
+  --soft: #7ed1d6;
+}
+
+/* ═══════════════════════
+   BASE
+═══════════════════════ */
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
-  background-color: #f4f7f6;
-  color: #333;
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  transition: 0.4s;
 }
 
 /* HEADER */
 .header {
   text-align: center;
-  padding: 40px 20px 10px;
+  padding: 50px 20px 10px;
 }
 
-.header h1 {
-  margin: 0;
-  font-size: 36px;
+.title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 56px;
+  font-weight: 300;
 }
 
-.header p {
-  margin-top: 10px;
-  color: #666;
+.title em {
+  color: var(--accent);
 }
 
-/* MAIN SECTION */
+.subtitle {
+  color: var(--soft);
+  letter-spacing: 2px;
+  font-size: 14px;
+}
+
+/* MAIN */
 .main {
   display: flex;
   justify-content: center;
@@ -33,62 +98,62 @@ body {
 /* CARDS */
 .card {
   width: 250px;
-  padding: 20px;
-  border-radius: 16px;
-  background-color: #ffffff;
+  padding: 25px;
+  border-radius: 18px;
+  background: var(--card);
+  backdrop-filter: blur(10px);
   text-align: center;
   text-decoration: none;
-  color: inherit;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  color: var(--text);
+  transition: 0.25s;
 }
 
 .card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+  transform: translateY(-6px);
 }
 
-/* DISABLED CARDS */
-.disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+.card h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  color: var(--accent);
+}
+
+.card p {
+  color: var(--soft);
 }
 
 /* FOOTER */
 .footer {
   text-align: center;
   padding: 20px;
-  font-size: 14px;
-  color: #888;
+  font-size: 13px;
+  color: var(--soft);
 }
 
-/* 🎨 PALETTE SWITCHER */
+/* SWITCHER */
 .palette-switcher {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  background: #ffffff;
+  background: var(--card);
   padding: 10px;
   border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  text-align: center;
 }
 
-.palette-switcher p {
-  margin: 0 0 5px;
-  font-size: 12px;
-}
-
-.palette-btn {
-  border: none;
-  margin: 3px;
-  padding: 8px;
+.palette-dot {
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
+  border: none;
+  margin: 4px;
   cursor: pointer;
-  background-color: #e0e0e0;
-  transition: transform 0.2s ease;
 }
 
-.palette-btn:hover {
-  transform: scale(1.1);
+.palette-dot[data-target="1"] { background: #b06aff; }
+.palette-dot[data-target="2"] { background: #ff7aa2; }
+.palette-dot[data-target="3"] { background: #e07b00; }
+.palette-dot[data-target="4"] { background: #f2c14e; }
+
+.palette-dot.active {
+  outline: 2px solid white;
 }
