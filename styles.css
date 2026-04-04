@@ -35,13 +35,13 @@
   --soft: #c48a9a;
 }
 
-/* 3 — High Contrast (SWAPPED) */
+/* 3 — Green Beach Vibe */
 [data-palette="3"] {
-  --bg: #f0f4fa;
-  --card: rgba(255,255,255,0.8);
-  --text: #001f44;
-  --accent: #e07b00;
-  --soft: #3366aa;
+  --bg: #d4ead9;          /* soft sandy/light green background */
+  --card: rgba(255, 250, 240, 0.85); /* light, warm card surface */
+  --text: #2a2420;        /* dark text for readability */
+  --accent: #6b9e78;      /* main green accent */
+  --soft: #a3c9a8;        /* lighter green for subtler text/buttons */
 }
 
 /* 4 — NEW Colorblind Friendly (Teal + Gold) */
