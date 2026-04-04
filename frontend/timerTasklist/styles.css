@@ -1,20 +1,10 @@
 /* ── Variables ─────────────────────────────────────────────── */
 :root {
-  --bg: #f0ede8;
-  --surface: #faf8f5;
-  --surface-2: #edeae4;
-  --text: #2a2420;
-  --text-muted: #8a7d75;
-  --accent: #6b9e78;
-  --accent-light: #d4ead9;
-  --accent-dark: #4a7a57;
-  --danger: #c0392b;
-  --warning: #d4793a;
-  --ok: #5a9e6b;
-  --shadow: 0 4px 20px rgba(44, 36, 32, 0.08);
-  --radius: 18px;
-  --radius-sm: 10px;
-}
+  --bg: transparent; 
+  --text: inherit;
+  --accent: inherit;
+  --card: rgba(255, 255, 255, 0.1);
+}  
 
 /* ── Base ───────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -25,7 +15,7 @@ body {
   color: var(--text);
   min-height: 100vh;
   padding: 20px;
-  transition: background 0.8s ease;
+  transition: background 0.8s ease, color 0.8s ease;
 }
 
 body.focus-mode {
@@ -40,22 +30,42 @@ body.focus-mode {
   margin-bottom: 20px;
 }
 
-.top-btn {
-  background: var(--surface);
-  border: 2px solid var(--surface-2);
-  border-radius: 100px;
-  padding: 8px 18px;
-  font-family: "DM Sans", sans-serif;
-  font-size: 0.88rem;
-  font-weight: 500;
-  color: var(--text);
-  cursor: pointer;
-  transition: all 0.2s;
-  box-shadow: var(--shadow);
+/* If you want Home on the left and the others on the right: */
+.top-btn:first-child {
+  margin-right: auto; /* Pushes all subsequent buttons to the far right */
 }
+
+/* --- TOP BAR BUTTONS (Home, Focus, Sound) --- */
+.top-btn {
+  background: var(--card); /* Uses the theme's card color */
+  border: 2px solid var(--accent); /* Constant accent border */
+  color: var(--accent); /* Constant accent text */
+  opacity: 1; /* Ensure it's not faded */
+  font-weight: 600;
+}
+
 .top-btn:hover {
-  border-color: var(--accent);
-  color: var(--accent-dark);
+  background: var(--accent);
+  color: var(--bg); /* Inverts colors on hover for a clear "active" feel */
+}
+
+/* --- TIMER & DATE (The big numbers and hints) --- */
+.time-display, 
+.date-hint {
+  color: var(--text) !important; /* Forces it to use the theme text color */
+}
+
+/* --- PAUSE BUTTON --- */
+.pause-btn {
+  background: var(--accent) !important;
+  color: var(--bg) !important; /* Makes Pause very high contrast */
+}
+
+/* --- MOODS / WELCOME MSG --- */
+/* Add these classes if you use them in your HTML for the 'anxious' etc words */
+.mood-text, .welcome-msg {
+  color: var(--accent);
+  font-weight: 500;
 }
 
 /* ── Layout ─────────────────────────────────────────────────── */
@@ -73,10 +83,12 @@ body.focus-mode {
 
 /* ── Cards ──────────────────────────────────────────────────── */
 .card {
-  background: var(--surface);
+  background: var(--card);
+  color: var(--text);
   border-radius: var(--radius);
   padding: 28px;
   box-shadow: var(--shadow);
+  transition: background 0.4s, color 0.4s;
 }
 
 .section-title {
@@ -196,19 +208,45 @@ body.focus-mode {
   flex: 1;
   border: none;
   border-radius: var(--radius-sm);
-  padding: 10px 8px;
+  padding: 12px 10px;
   font-family: "DM Sans", sans-serif;
-  font-size: 0.88rem;
+  font-size: 0.9rem;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow);
 }
-.start-btn { background: var(--accent); color: white; }
-.start-btn:hover { background: var(--accent-dark); }
-.pause-btn { background: var(--surface-2); color: var(--text); }
-.pause-btn:hover { background: #ddd8d0; }
-.reset-btn { background: var(--surface-2); color: var(--text-muted); }
-.reset-btn:hover { color: var(--text); background: #ddd8d0; }
+
+/* START */
+.start-btn {
+  background: var(--accent);
+  color: white;
+}
+.start-btn:hover {
+  background: var(--accent-dark);
+  transform: translateY(-1px);
+}
+
+/* PAUSE */
+.pause-btn {
+  background: var(--surface-2);
+  color: var(--text);
+}
+.pause-btn:hover {
+  background: #ddd8d0;
+  transform: translateY(-1px);
+}
+
+/* RESET */
+.reset-btn {
+  background: transparent;
+  color: var(--text-muted);
+  border: 2px dashed var(--surface-2);
+}
+.reset-btn:hover {
+  color: var(--text);
+  border-color: var(--accent);
+}
 
 .sound-label {
   display: flex;
@@ -360,4 +398,137 @@ body.focus-mode {
   font-size: 0.9rem;
   font-style: italic;
   padding: 24px 0;
+}
+
+.focus-view {
+  position: fixed;
+  inset: 0;
+  background: #0f172a;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.hidden {
+  display: none;
+}
+
+.focus-timer {
+  position: absolute;
+  font-size: 4.5rem;
+  font-family: "DM Serif Display";
+  text-align: center;
+  animation: pulseFocus 2s infinite ease-in-out;
+}
+
+@keyframes pulseFocus {
+  0%, 100% { transform: scale(1); opacity: 0.9; }
+  50% { transform: scale(1.05); opacity: 1; }
+}
+
+.focus-task {
+  font-size: 1.4rem;
+  opacity: 0.8;
+}
+
+.focus-exit {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: rgba(255,255,255,0.1);
+  border: none;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: background 0.2s;
+}
+.focus-exit:hover {
+  background: rgba(255,255,255,0.2);
+}
+
+/* Focus Back Button */
+.focus-back {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: rgba(255,255,255,0.1);
+  border: none;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.focus-back:hover {
+  background: rgba(255,255,255,0.2);
+}
+
+/* Progress Ring */
+.progress-ring {
+  transform: rotate(-90deg);
+  margin-bottom: 20px;
+}
+
+.progress-bg {
+  fill: transparent;
+  stroke: rgba(255,255,255,0.1);
+  stroke-width: 10;
+}
+
+.progress-ring-circle {
+  fill: transparent;
+  stroke: #6b9e78;
+  stroke-width: 10;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1s linear;
+}
+
+/* Improve focus timer */
+.focus-task {
+  font-size: 1.3rem;
+  opacity: 0.85;
+}
+
+.focus-controls {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  z-index: 1;
+}
+
+.focus-back {
+  z-index: 2;
+}
+
+.focus-left,
+.focus-right {
+  flex: 1;
+  cursor: pointer;
+}
+
+.focus-left:hover {
+  background: rgba(255,255,255,0.05);
+}
+
+.focus-right:hover {
+  background: rgba(255,255,255,0.05);
+}
+
+.focus-circle-container {
+  position: relative;
+  width: 260px;
+  height: 260px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.progress-ring-circle {
+  transition: stroke-dashoffset 0.8s linear;
 }

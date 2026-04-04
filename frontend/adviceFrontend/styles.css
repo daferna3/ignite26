@@ -1,19 +1,9 @@
 /* ── Variables ─────────────────────────────────────────────── */
 :root {
-  --bg: #f5f0eb;
-  --surface: #fffdf9;
-  --surface-2: #f0ebe4;
-  --text: #2c2420;
-  --text-muted: #8a7d75;
-  --accent: #6b9e78;
-  --accent-light: #d4ead9;
-  --accent-dark: #4a7a57;
-  --warning: #c4783c;
-  --warning-light: #faeadb;
-  --shadow: 0 4px 24px rgba(44, 36, 32, 0.08);
-  --shadow-lg: 0 12px 48px rgba(44, 36, 32, 0.12);
-  --radius: 20px;
-  --radius-sm: 12px;
+  --bg: inherit;
+  --text: inherit;
+  --accent: inherit;
+  --card: inherit; /* Add this if it's missing */
 }
 
 /* ── Reset & Base ───────────────────────────────────────────── */
@@ -26,8 +16,8 @@ body {
   background: var(--bg);
   color: var(--text);
   min-height: 100vh;
-  overflow-x: hidden;
-  line-height: 1.6;
+  padding: 20px;
+  transition: background 0.8s ease, color 0.8s ease;
 }
 
 /* ── Ambient Orbs ───────────────────────────────────────────── */
@@ -121,12 +111,14 @@ body {
 
 /* ── Cards ──────────────────────────────────────────────────── */
 .card {
-  background: var(--surface);
+  background: var(--card);
+  color: var(--text);
   border-radius: var(--radius);
-  padding: 32px;
+  padding: 28px;
   box-shadow: var(--shadow);
-  transition: box-shadow 0.3s;
+  transition: background 0.4s, color 0.4s;
 }
+
 .card:hover { box-shadow: var(--shadow-lg); }
 
 .card-title {
@@ -150,28 +142,40 @@ body {
   margin-bottom: 20px;
 }
 
+/* --- MOOD BUTTONS VISIBILITY --- */
 .mood-btn {
-  background: var(--surface-2);
-  border: 2px solid transparent;
-  border-radius: var(--radius-sm);
-  padding: 14px 12px;
-  font-family: "DM Sans", sans-serif;
-  font-size: 0.95rem;
-  color: var(--text);
-  cursor: pointer;
-  transition: all 0.2s ease;
-  font-weight: 500;
-  text-align: left;
+  background: var(--card) !important; /* Use theme card color */
+  color: var(--text) !important;      /* Use theme text color */
+  border: 2px solid var(--accent) !important; /* Always show the border */
+  font-weight: 600;
 }
+
 .mood-btn:hover {
-  background: var(--accent-light);
-  border-color: var(--accent);
-  transform: translateY(-1px);
+  background: var(--accent) !important;
+  color: var(--bg) !important; /* Invert for high visibility on hover */
 }
+
 .mood-btn.active {
   background: var(--accent-light);
   border-color: var(--accent);
 }
+
+/* --- CHAT BUBBLE VISIBILITY (The "Hey I'm here" text) --- */
+.bot-bubble {
+  background: var(--accent) !important; /* Use accent color for the box */
+  color: var(--bg) !important;         /* Use background color for the text (high contrast) */
+  font-weight: 500;
+  box-shadow: var(--shadow);
+}
+
+/* --- HOME BUTTON VISIBILITY --- */
+.home-btn {
+  background: var(--card) !important;
+  color: var(--accent) !important;
+  border: 2px solid var(--accent) !important;
+  font-weight: 600;
+}
+
 .breakdown-btn {
   grid-column: 1 / -1;
   background: var(--warning-light);
@@ -459,4 +463,26 @@ textarea::placeholder { color: var(--text-muted); }
   .card { padding: 24px 20px; }
   .mood-grid { grid-template-columns: 1fr; }
   .breakdown-btn { grid-column: 1; }
+}
+
+.home-btn {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 100;
+  background: var(--surface);
+  border: 2px solid var(--surface-2);
+  border-radius: 100px;
+  padding: 8px 18px;
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--text);
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  transition: all 0.2s;
+}
+.home-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent-dark);
 }

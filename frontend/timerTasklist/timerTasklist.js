@@ -1,36 +1,94 @@
+function goHome() {
+  window.location.href = "../../index.html";
+}
+
 // ── TIMER ─────────────────────────────────────────────────────────────────
 
-let time = 1500; // 25 minutes in seconds
-let defaultTime = 1500;
+let time = 300; // 5 minutes in seconds
+let defaultTime = 300;
 let interval = null;
+let circle = null;
+let circumference = null;
+
+function setupCircle() {
+  const circleEl = document.querySelector(".progress-ring-circle");
+  if (!circleEl) return;
+
+  const radius = circleEl.r.baseVal.value;
+  circumference = 2 * Math.PI * radius;
+
+  circleEl.style.strokeDasharray = `${circumference}`;
+  circleEl.style.strokeDashoffset = `${circumference}`;
+
+  circle = circleEl;
+}
+
+let audioUnlocked = false;
+
+function unlockAudio() {
+  if (audioUnlocked) return;
+
+  const sounds = [
+    "bgSound",
+    "bellSound",
+    "alarmSound",
+    "focusAlarm"
+  ];
+
+  sounds.forEach(id => {
+    const audio = document.getElementById(id);
+    if (!audio) return;
+
+    audio.volume = 0.01; // safer than 0
+    audio.play().then(() => {
+      audio.pause();
+      audio.currentTime = 0;
+      audio.volume = 1; // reset for real use
+    }).catch(() => {});
+  });
+
+  audioUnlocked = true;
+}
 
 function updateDisplay() {
   let minutes = Math.floor(time / 60);
   let seconds = time % 60;
-  document.getElementById("time").textContent =
-    `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+  let formatted = `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+
+  document.getElementById("time").textContent = formatted;
+
+  let focusTime = document.getElementById("focusTime");
+  if (focusTime) focusTime.textContent = formatted;
+
+  // Update circle progress
+  if (circle && circumference) {
+    let progress = time / defaultTime;
+    let offset = circumference * (1 - progress);
+    circle.style.strokeDashoffset = offset;
+  }
 }
 
 // Set timer from preset buttons
-function setTimer(minutes) {
+function setTimer(minutes, btn) {
   pauseTimer();
-  time = minutes * 60;
+  time = Math.round(minutes * 60);
   defaultTime = time;
   updateDisplay();
 
-  // Update active preset button
-  document.querySelectorAll(".preset-btn").forEach(btn => btn.classList.remove("active"));
-  event.target.classList.add("active");
+  document.querySelectorAll(".preset-btn")
+    .forEach(b => b.classList.remove("active"));
+
+  btn.classList.add("active");
 }
 
 // Set timer from custom input
 function setCustomTimer() {
   let input = document.getElementById("customMinutes");
-  let mins = parseInt(input.value);
-  if (!mins || mins < 1) return;
+  let mins = parseFloat(input.value);
+  if (!mins || mins < 0.1) return;
 
   pauseTimer();
-  time = mins * 60;
+  time = Math.round(mins * 60);
   defaultTime = time;
   updateDisplay();
   input.value = "";
@@ -39,9 +97,33 @@ function setCustomTimer() {
 }
 
 // Adjust time by +/- minutes (works whether running or paused)
-function adjustTime(minutes) {
-  time = Math.max(0, time + minutes * 60);
+function adjustTime(value) {
+  // If small number, assume minutes (from UI buttons)
+  if (Math.abs(value) <= 10) {
+    value = value * 60;
+  }
+
+  time = Math.max(0, time + value);
+  defaultTime = Math.max(defaultTime, time);
   updateDisplay();
+}
+
+function playBell() {
+  let bell = document.getElementById("bellSound");
+  if (bell) {
+    bell.currentTime = 0;
+    bell.volume = 0.6;
+    bell.play().catch(err => console.log("Bell error:", err));
+  }
+}
+
+function playAlarm() {
+  let alarm = document.getElementById("alarmSound");
+  if (alarm) {
+    alarm.currentTime = 0;
+    alarm.volume = 0.8;
+    alarm.play().catch(err => console.log("Alarm error:", err));
+  }
 }
 
 function startTimer() {
@@ -55,15 +137,18 @@ function startTimer() {
       clearInterval(interval);
       interval = null;
 
-      if (document.getElementById("soundToggle").checked) {
-        let sound = new Audio("audio/bell.mp3");
-        sound.volume = 0.5;
-        sound.play().catch(() => {}); // catch autoplay restrictions
+      if (focusOn) {
+        playFocusAlarm();
+      } else {
+        playAlarm();
       }
 
-      // Flash the timer display when done
       document.getElementById("time").classList.add("done");
       setTimeout(() => document.getElementById("time").classList.remove("done"), 3000);
+
+      setTimeout(() => {
+        resetTimer();
+      }, 4000);
     }
   }, 1000);
 }
@@ -84,18 +169,32 @@ updateDisplay();
 
 // ── SOUND ─────────────────────────────────────────────────────────────────
 
-let soundPlaying = false;
+let soundPlaying = false; // ← was missing, caused toggleSound() to crash
+let fadeInterval = null;
 
 function toggleSound() {
   let audio = document.getElementById("bgSound");
   let btn = document.getElementById("soundBtn");
 
   if (soundPlaying) {
+    if (fadeInterval) clearInterval(fadeInterval);
     audio.pause();
+    audio.currentTime = 0;
     btn.textContent = "🔇 Calm Sound";
   } else {
+    audio.volume = 0;
     audio.play().catch(() => {});
     btn.textContent = "🔊 Calm Sound";
+
+    let vol = 0;
+    fadeInterval = setInterval(() => {
+      if (vol < 0.3) {
+        vol += 0.05;
+        audio.volume = vol;
+      } else {
+        clearInterval(fadeInterval);
+      }
+    }, 100);
   }
 
   soundPlaying = !soundPlaying;
@@ -107,7 +206,25 @@ let focusOn = false;
 
 function toggleFocus() {
   focusOn = !focusOn;
-  document.body.classList.toggle("focus-mode", focusOn);
+
+  const focusView = document.getElementById("focusView");
+  const mainUI = document.querySelector(".container");
+
+  focusView.classList.toggle("hidden", !focusOn);
+  mainUI.style.display = focusOn ? "none" : "grid";
+
+  // 🔑 Stop ALL alarms when switching modes
+  document.getElementById("alarmSound").pause();
+  document.getElementById("alarmSound").currentTime = 0;
+
+  document.getElementById("focusAlarm").pause();
+  document.getElementById("focusAlarm").currentTime = 0;
+
+  if (focusOn) {
+    setupCircle();
+  }
+
+  updateFocusTask();
 }
 
 // ── TASKS ─────────────────────────────────────────────────────────────────
@@ -123,19 +240,17 @@ function addTask() {
     return;
   }
 
-  // Due date is OPTIONAL — if not provided, task goes to bottom
   tasks.push({
     text: taskText,
     due: dueDate ? new Date(dueDate) : null,
     completed: false
   });
 
-  // Sort: tasks WITH due dates first (by date), then tasks WITHOUT due dates
   tasks.sort((a, b) => {
-    if (a.due && b.due) return a.due - b.due;  // both have dates: sort by date
-    if (a.due) return -1;                       // a has date, b doesn't: a goes first
-    if (b.due) return 1;                        // b has date, a doesn't: b goes first
-    return 0;                                   // neither has date: keep order
+    if (a.due && b.due) return a.due - b.due;
+    if (a.due) return -1;
+    if (b.due) return 1;
+    return 0;
   });
 
   saveTasks();
@@ -158,34 +273,36 @@ function renderTasks() {
     let li = document.createElement("li");
     li.className = "task-item" + (task.completed ? " completed" : "");
 
-    // Checkbox
     let checkbox = document.createElement("input");
     checkbox.type = "checkbox";
     checkbox.className = "task-checkbox";
     checkbox.checked = task.completed;
     checkbox.onchange = () => {
+      let wasCompleted = tasks[index].completed;
       tasks[index].completed = checkbox.checked;
+
+      if (!wasCompleted && checkbox.checked) {
+        playBell();
+      }
+
       saveTasks();
       renderTasks();
+      updateFocusTask();
     };
 
-    // Task info wrapper
     let info = document.createElement("div");
     info.className = "task-info";
 
-    // Task text
     let span = document.createElement("span");
     span.className = "task-text";
     span.textContent = task.text;
 
-    // Due date label (only if task has one)
     let dueLabel = document.createElement("span");
     dueLabel.className = "task-due";
 
     if (task.due) {
       let now = new Date();
-      let diff = (task.due - now) / (1000 * 60); // diff in minutes
-
+      let diff = (task.due - now) / (1000 * 60);
       dueLabel.textContent = `Due: ${task.due.toLocaleString()}`;
 
       if (!task.completed) {
@@ -202,7 +319,6 @@ function renderTasks() {
     info.appendChild(span);
     info.appendChild(dueLabel);
 
-    // Delete button
     let deleteBtn = document.createElement("button");
     deleteBtn.className = "delete-btn";
     deleteBtn.textContent = "✕";
@@ -217,6 +333,17 @@ function renderTasks() {
     li.appendChild(deleteBtn);
     list.appendChild(li);
   });
+}
+
+function updateFocusTask() {
+  let focusTask = document.getElementById("focusTask");
+  let nextTask = tasks.find(t => !t.completed);
+
+  if (nextTask) {
+    focusTask.textContent = nextTask.text;
+  } else {
+    focusTask.textContent = "You're all caught up 🌿";
+  }
 }
 
 // ── PERSISTENCE ───────────────────────────────────────────────────────────
@@ -236,4 +363,16 @@ function loadTasks() {
   }
 }
 
+document.addEventListener("click", unlockAudio, { once: true });
+
+function playFocusAlarm() {
+  let alarm = document.getElementById("focusAlarm");
+  if (alarm) {
+    alarm.currentTime = 0;
+    alarm.volume = 0.9;
+    alarm.play().catch(err => console.log("Focus alarm error:", err));
+  }
+}
+
 loadTasks();
+updateFocusTask();

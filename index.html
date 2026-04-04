@@ -2,36 +2,39 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Calm Productivity</title>
+  <title>Flow State</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body data-palette="1">
 
   <!-- HEADER -->
   <header class="header">
-    <h1>Calm Productivity</h1>
-    <p>A gentle space to focus, breathe, and get things done</p>
+    <h1 class="title">Flow <em>State</em></h1>
+    <p class="subtitle">focus · breathe · restore</p>
   </header>
 
-  <!-- MAIN NAVIGATION -->
+  <!-- MAIN -->
   <main class="main">
 
-    <!-- TIMER / TASK LIST -->
     <a href="frontend/timerTasklist/index.html" class="card">
-      <h2>⏱️ Focus</h2>
-      <p>Use a gentle timer and organize your tasks step-by-step.</p>
+      <h2>⏱ Focus</h2>
+      <p>Gentle timer + task steps to stay present.</p>
     </a>
 
-    <!-- DESTRESS -->
     <a href="frontend/destress/index.html" class="card">
       <h2>🌿 Destress</h2>
       <p>Breathing, calming sounds, grounding tools.</p>
     </a>
 
-    <!-- TIPS -->
     <a href="frontend/adviceFrontend/index.html" class="card">
-    <h2>💡 Advice</h2>
-    <p>AI-powered strategies for focus, calm, and getting through hard moments.</p>
+      <h2>💡 Advice</h2>
+      <p>AI strategies for focus, calm, and hard moments.</p>
     </a>
 
   </main>
@@ -41,13 +44,60 @@
     <p>Designed for focus, calm, and clarity</p>
   </footer>
 
-  <!-- 🎨 COLOR PALETTE SWITCHER (UI ONLY FOR NOW) -->
+  <!-- PALETTE SWITCHER -->
   <div class="palette-switcher">
     <p>Theme</p>
-    <button class="palette-btn">🌊</button>
-    <button class="palette-btn">🌸</button>
-    <button class="palette-btn">🌿</button>
+    <button class="palette-dot active" data-target="1"></button>
+    <button class="palette-dot" data-target="2"></button>
+    <button class="palette-dot" data-target="3"></button>
+    <button class="palette-dot" data-target="4"></button>
   </div>
+
+  <script>
+    const dots = document.querySelectorAll('.palette-dot');
+
+    // Load saved theme
+    const savedTheme = localStorage.getItem("theme") || "1";
+    document.body.setAttribute("data-palette", savedTheme);
+
+    // Highlight active dot
+    dots.forEach(dot => {
+      if (dot.dataset.target === savedTheme) {
+        dot.classList.add("active");
+      }
+    });
+
+    // Click handler
+    dots.forEach(dot => {
+      dot.addEventListener('click', () => {
+        const target = dot.dataset.target;
+
+        document.body.setAttribute('data-palette', target);
+        localStorage.setItem("theme", target);
+
+        dots.forEach(d => d.classList.remove('active'));
+        dot.classList.add('active');
+      });
+    });
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const dots = document.querySelectorAll('.palette-dot');
+      const savedTheme = localStorage.getItem("theme") || "1";
+      document.body.setAttribute("data-palette", savedTheme);
+
+      dots.forEach(dot => {
+        if (dot.dataset.target === savedTheme) dot.classList.add("active");
+
+        dot.addEventListener('click', () => {
+          const target = dot.dataset.target;
+          document.body.setAttribute('data-palette', target);
+          localStorage.setItem("theme", target);
+          dots.forEach(d => d.classList.remove('active'));
+          dot.classList.add('active');
+        });
+      });
+    });
+  </script>
 
 </body>
 </html>

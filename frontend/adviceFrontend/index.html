@@ -10,9 +10,13 @@
       href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="styles.css"> 
+    <link rel="stylesheet" href="../../themes.css">
   </head>
-  <body>
+
+  <body data-palette="1">    
+    <button class="home-btn" onclick="window.location.href='../../index.html'">🏠 Home</button>
+    
     <div class="orb orb-1"></div>
     <div class="orb orb-2"></div>
     <div class="orb orb-3"></div>
@@ -103,11 +107,46 @@
           Get professional help →
         </a>
       </footer>
+
+      <div class="palette-switcher">
+        <p>Theme</p>
+        <button class="palette-dot" data-target="1"></button>
+        <button class="palette-dot" data-target="2"></button>
+        <button class="palette-dot" data-target="3"></button>
+        <button class="palette-dot" data-target="4"></button>
+      </div>
     </main>
 
-    <script src="js/api.js"></script>
-    <script src="js/mood.js"></script>
-    <script src="js/chat.js"></script>
-    <script src="js/dump.js"></script>
+    <script src="jsFiles/api.js"></script>
+    <script src="jsFiles/mood.js"></script>
+    <script src="jsFiles/chat.js"></script>
+    <script src="jsFiles/dump.js"></script>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const dots = document.querySelectorAll('.palette-dot');
+      
+      // 1. Get the theme from localStorage
+      const savedTheme = localStorage.getItem("theme") || "1";
+      
+      // 2. Apply it to the body immediately
+      document.body.setAttribute("data-palette", savedTheme);
+
+      // 3. Update the UI dots to show which one is active
+      dots.forEach(dot => {
+        if(dot.dataset.target === savedTheme) dot.classList.add('active');
+        
+        dot.addEventListener('click', () => {
+          const target = dot.dataset.target;
+          document.body.setAttribute('data-palette', target);
+          localStorage.setItem('theme', target); // Save for other pages
+          
+          dots.forEach(d => d.classList.remove('active'));
+          dot.classList.add('active');
+        });
+      });
+    });
+    </script>
+
   </body>
 </html>

@@ -1,0 +1,69 @@
+/* themes.css */
+
+/* DEFAULT THEME PALETTES */
+/* Default / Light Theme */
+/* 1 — Default (Void Violet) */
+/* 1 — Default (Void Violet) */
+[data-palette="1"], :root {
+  --bg: #0d0a14;
+  --card: rgba(40, 24, 72, 0.65);
+  --text: #e8d8ff;
+  --accent: #b06aff;
+  --text-muted: #a888cc; /* Adding this so the "muted" words update too */
+}
+
+/* 2 — Deep Forest */
+[data-palette="2"] {
+  --bg: #0f1f17;
+  --card: rgba(22, 48, 34, 0.75);
+  --text: #e8fff1;
+  --accent: #ff7aa2;
+  --text-muted: #c48a9a;
+}
+
+/* 3 — Green Beach (Light) */
+[data-palette="3"] {
+  --bg: #d4ead9;
+  --card: rgba(255, 250, 240, 0.85);
+  --text: #2a2420;
+  --accent: #6b9e78;
+  --text-muted: #5a7d61;
+}
+
+/* 4 — Teal Gold */
+[data-palette="4"] {
+  --bg: #0f2a2e;
+  --card: rgba(20, 60, 65, 0.75);
+  --text: #e6ffff;
+  --accent: #f2c14e;
+  --text-muted: #7ed1d6;
+}
+
+/* PALETTE SWITCHER UI */
+.palette-switcher {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: var(--card);
+  padding: 10px;
+  border-radius: 12px;
+  z-index: 999;
+}
+
+.palette-dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: none;
+  margin: 4px;
+  cursor: pointer;
+}
+
+.palette-dot[data-target="1"] { background: #b06aff; }
+.palette-dot[data-target="2"] { background: #ff7aa2; }
+.palette-dot[data-target="3"] { background: #6b9e78; }
+.palette-dot[data-target="4"] { background: #f2c14e; }
+
+.palette-dot.active {
+  outline: 2px solid white;
+}

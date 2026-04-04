@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Need a mental break?</title>
+    <title>Destress</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
@@ -13,7 +13,9 @@
 
 <body>
 
-    <button class="home-btn" id="main-home-btn" onclick="window.location.href='../../index.html'">🏠 Home</button>
+    <button class="home-btn" onclick="window.location.href='../../index.html'">🏠 Home</button>
+
+    <button class="home-btn" onclick="window.location.href='../../index.html'">🏠 Home</button>
 
     <div class="orb orb-1"></div>
     <div class="orb orb-2"></div>
@@ -21,25 +23,14 @@
 
     <div class="container">
         <div class="main card">
-            <h1 id="intro" class="card-title">need a mental break?</h1>
-            <p class="card-subtitle">choose your method</p>
+            <h1 id="intro" class="card-title">choose your method</h1>
+            <p class="card-sub">select a path to find your center</p>
+
             <div class="method-grid">
-                <button type="button" id="breathe-button" class="method-btn">
-                    <span class="btn-text">breathe</span>
-                    <span class="btn-subtext">a deep breathing exercise</span>
-                </button>
-                <button type="button" id="bounce-button" class="method-btn">
-                    <span class="btn-text">zone out</span>
-                    <span class="btn-subtext">take a break from thinking and watch the square do its thing</span>
-                </button>
-                <button type="button" id="wave-button" class="method-btn">
-                    <span class="btn-text">ocean waves</span>
-                    <span class="btn-subtext">watch and listen to the ocean for as long as you'd like</span>
-                </button>
-                <button type="button" id="stretch-button" class="method-btn">
-                    <span class="btn-text">stretch</span>
-                    <span class="btn-subtext">five minutes of guided stretching</span>
-                </button>
+                <button type="button" id="breathe-button" class="method-btn">breathe</button>
+                <button type="button" id="bounce-button" class="method-btn">zone out</button>
+                <button type="button" id="wave-button" class="method-btn">ocean waves</button>
+                <button type="button" id="stretch-button" class="method-btn">stretch</button>
             </div>
         </div>
     </div>
@@ -47,22 +38,13 @@
     <div class="popup" id="breathe-popup">
         <div class="popup-card card">
             <button type="button" class="back-button">Go back</button>
-            
-            <div id="breathe-start-screen">
-                <h2 class="card-title">Ready to breathe?</h2>
-                <p>Find a comfortable position and click start.</p>
-                <button id="start-breathe-btn" class="action-btn">Start</button>
+            <div class="circle-container">
+                <div class="circle"></div>
             </div>
-
-            <div id="breathe-exercise-area" style="display: none;">
-                <div class="circle-spacer">
-                    <div class="circle"></div>
-                </div>
-                <div class="instruction-area">
-                    <h2 id="in">Breathe in</h2>
-                    <h2 id="hold">Hold your breath</h2>
-                    <h2 id="out">Breathe out</h2>
-                </div>
+            <div class="instruction-area">
+                <h2 id="in">Breathe in</h2>
+                <h2 id="hold">Hold your breath</h2>
+                <h2 id="out">Breathe out</h2>
             </div>
         </div>
     </div>
@@ -87,11 +69,11 @@
             <button type="button" class="back-button">Go back</button>
             <div class="stretch-content">
                 <h2 id="stretch-step" class="card-title">Got five minutes?</h2>
-                <p id="stretch-description">Click "Next" to start stretching.</p>
+                <p id="stretch-description" class="card-sub">Click "Next" to start stretching.</p>
                 <div id="stretch-buttons">
-                    <button id="next-stretch" class="action-btn">Next</button>
-                    <button id="pause-stretch" class="action-btn" style="display:none;">Pause</button>
-                    <button id="skip-stretch" class="action-btn skip" style="display:none;">Skip</button>
+                    <button id="next-stretch" class="stretch-btn-primary">Next</button>
+                    <button id="pause-stretch" class="stretch-btn-primary" style="display:none;">Pause</button>
+                    <button id="skip-stretch" class="stretch-btn-secondary" style="display:none;">Skip</button>
                 </div>
             </div>
             <div id="stretch-progress-container">

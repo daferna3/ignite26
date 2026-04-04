@@ -7,17 +7,54 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css"> 
+  <link rel="stylesheet" href="../../themes.css">
 </head>
-<body>
+
+<body data-palette="1">
 
 <audio id="bgSound" loop>
+  <source src="audio/calmMusic.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="bellSound">
   <source src="audio/bell.mp3" type="audio/mpeg">
 </audio>
 
+<audio id="alarmSound">
+  <source src="audio/alarm.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="focusAlarm">
+  <source src="audio/focusAlarm.mp3" type="audio/mpeg">
+</audio>
+
 <div class="top-bar">
+  <button class="top-btn" onclick="goHome()">🏠 Home</button>
   <button class="top-btn" onclick="toggleFocus()">🌿 Focus Mode</button>
   <button class="top-btn" onclick="toggleSound()" id="soundBtn">🔇 Calm Sound</button>
+</div>
+
+<div id="focusView" class="focus-view hidden">
+
+  <button class="focus-back" onclick="toggleFocus()">← Back</button>
+
+  <div class="focus-controls">
+    <div class="focus-left" onclick="adjustTime(-60)"></div>
+    <div class="focus-right" onclick="adjustTime(60)"></div>
+  </div>
+
+  <div class="focus-circle-container">
+    <svg class="progress-ring" width="260" height="260">
+      <circle class="progress-bg" cx="130" cy="130" r="110" />
+      <circle class="progress-ring-circle" cx="130" cy="130" r="110" />
+    </svg>
+
+    <div class="focus-timer" id="focusTime">5:00</div>
+  </div>
+
+  <div class="focus-task" id="focusTask">No tasks yet 🌿</div>
+
 </div>
 
 <div class="container">
@@ -28,11 +65,12 @@
 
     <!-- Preset buttons -->
     <div class="presets">
-      <button class="preset-btn" onclick="setTimer(5)">5m</button>
-      <button class="preset-btn" onclick="setTimer(10)">10m</button>
-      <button class="preset-btn active" onclick="setTimer(25)">25m</button>
-      <button class="preset-btn" onclick="setTimer(45)">45m</button>
-      <button class="preset-btn" onclick="setTimer(60)">60m</button>
+      <button class="preset-btn" onclick="setTimer(0.5, this)">30s</button>
+      <button class="preset-btn" onclick="setTimer(1, this)">1m</button>
+      <button class="preset-btn active" onclick="setTimer(5, this)">5m</button>
+      <button class="preset-btn" onclick="setTimer(10, this)">10m</button>
+      <button class="preset-btn" onclick="setTimer(30, this)">30m</button>
+      <button class="preset-btn" onclick="setTimer(60, this)">60m</button>
     </div>
 
     <!-- Custom time input -->
@@ -42,12 +80,13 @@
     </div>
 
     <!-- Timer display -->
-    <div id="time" class="time-display">25:00</div>
+    <div id="time" class="time-display">5:00</div>
 
     <!-- Adjust time buttons -->
     <div class="adjusters">
-      <button class="adj-btn" onclick="adjustTime(-5)">-5m</button>
       <button class="adj-btn" onclick="adjustTime(-1)">-1m</button>
+      <button class="adj-btn" onclick="adjustTime(-0.5)">-30s</button>
+      <button class="adj-btn" onclick="adjustTime(0.5)">+30s</button>
       <button class="adj-btn" onclick="adjustTime(1)">+1m</button>
       <button class="adj-btn" onclick="adjustTime(5)">+5m</button>
     </div>
@@ -59,11 +98,7 @@
       <button class="ctrl-btn reset-btn" onclick="resetTimer()">↺ Reset</button>
     </div>
 
-    <!-- Sound toggle -->
-    <label class="sound-label">
-      <input type="checkbox" id="soundToggle"> Ring when done
-    </label>
-  </div>
+  </div><!-- end timer-section -->
 
   <!-- RIGHT: TASK LIST -->
   <div class="task-section card">
@@ -81,8 +116,41 @@
     <ul id="taskList"></ul>
   </div>
 
+  <div class="palette-switcher">
+    <p>Theme</p>
+    <button class="palette-dot" data-target="1"></button>
+    <button class="palette-dot" data-target="2"></button>
+    <button class="palette-dot" data-target="3"></button>
+    <button class="palette-dot" data-target="4"></button>
+  </div>
+
 </div>
 
 <script src="timerTasklist.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const dots = document.querySelectorAll('.palette-dot');
+  
+  // 1. Get the theme from localStorage
+  const savedTheme = localStorage.getItem("theme") || "1";
+  
+  // 2. Apply it to the body immediately
+  document.body.setAttribute("data-palette", savedTheme);
+
+  // 3. Update the UI dots to show which one is active
+  dots.forEach(dot => {
+    if(dot.dataset.target === savedTheme) dot.classList.add('active');
+    
+    dot.addEventListener('click', () => {
+      const target = dot.dataset.target;
+      document.body.setAttribute('data-palette', target);
+      localStorage.setItem('theme', target); // Save for other pages
+      
+      dots.forEach(d => d.classList.remove('active'));
+      dot.classList.add('active');
+    });
+  });
+});
+</script>
 </body>
 </html>
